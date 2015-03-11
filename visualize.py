@@ -3,6 +3,7 @@ Show all different interpolation methods for imshow
 '''
 
 import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
 
 import grideye_comm as geye
@@ -23,13 +24,17 @@ gport = geye.initialize_device()
 #           'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos']
 
 grid = geye.read_packet(gport)
+grid = np.subtract(np.min(grid),grid)
 
 plt.ion()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
+hImage = ax.imshow(grid, interpolation='none')
+
 while True:
-	ax.imshow(grid, interpolation='none')
-	#plt.draw()
+	hImage.set_data(grid)
+	plt.draw()
 	plt.pause(0.02)
 	grid = geye.read_packet(gport)
+	grid = np.subtract(np.min(grid),grid)
