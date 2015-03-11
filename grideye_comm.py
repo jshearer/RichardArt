@@ -2,9 +2,7 @@ from serial import Serial
 import struct
 import numpy
 
-port = Serial(port='/dev/ttyUSB0',baudrate=115200)
-
-def read_packet():
+def read_packet(port):
 	#Thermistor
 	port.read(2)
 	
@@ -14,11 +12,11 @@ def read_packet():
 
 	print("Got data! Wheee: \n%s"%str(data))
 
+def initialize_device(port='/dev/ttyUSB0'):
+	port = Serial(port=port,baudrate=115200)
+	#Initialize the device with '*'
+	port.write('*')
 
-#Initialize the device with '*'
-port.write('*')
-
-while True:
 	while port.read() is not '*':
 		print("Got something, not asterisk, continuing.")
 		continue
@@ -27,6 +25,5 @@ while True:
 
 	print("Reached Asterisk. Now at start of data.")
 
-	read_packet()
-
+	return port
 
