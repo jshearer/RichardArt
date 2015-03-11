@@ -17,9 +17,13 @@ def read_packet(port):
 	#Thermistor
 	port.read(2)
 	
-	data = struct.unpack('h'*64,str(port.read(128)))
+	data = struct.unpack('H'*64,str(port.read(128)))
 
 	data = numpy.fliplr(numpy.reshape(data,(8,8)))
+
+	if numpy.amax(data)>200:
+		print("Got junk data!!!!! Here it is:\n%s"%str(data))
+		return read_packet(port)
 
 	print("Got data! Wheee: \n%s"%str(data))
 
