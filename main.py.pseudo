@@ -1,0 +1,31 @@
+Play Audio = True
+Play Video = True
+
+While True:
+	Check for occupancy
+		Occupancy True:
+			Play audio + video if not already playing
+		Occupancy False:
+			Stop playing audio + video
+
+	Check if button is pressed:
+		New Press (as in, wasn't recording last iteration):
+			Start recording
+		Old Press (as in, was recording last iteration):
+			Keep recording
+		New Non-Press (as in, was recording last iteration):
+			Stop recording
+		Old Non-Press (as in, wasn't recording last iteration):
+			Do nothing
+
+	Should play audio/video?
+		If yes:
+			Check if audio/video is done playing
+				If done:
+					Start playing audio/video
+				If not done;
+					Do nothing
+		If no:
+			Do nothing (as in, let audio/video play to finish then stop)
+
+

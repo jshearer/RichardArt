@@ -52,3 +52,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.img
+*.MOV
+*.mp3
