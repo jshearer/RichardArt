@@ -63,10 +63,10 @@ while True:
 			if audio_process.poll() != None:
 				#Process finished
 
-				audio_process = subprocess.Popen(['aplay', audio_file], env=new_env)
+				audio_process = subprocess.Popen(['mplayer', audio_file], env=new_env)
 				print("Restarting the audio.")
 		else:
-			audio_process = subprocess.Popen(['aplay', audio_file], env=new_env)
+			audio_process = subprocess.Popen(['mplayer', audio_file], env=new_env)
 			print("Starting audio.")
 	else:
 		if audio_process:
