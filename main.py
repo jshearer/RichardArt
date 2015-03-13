@@ -50,7 +50,7 @@ while True:
 			print("Starting to record.")
 	else:
 		if is_recording:
-			record_process.terminate()
+			record_process.kill()
 			is_recording = False
 			print("Done recording, terminating.")
 	###### ###### ###### ###### ######
@@ -67,7 +67,7 @@ while True:
 			print("Starting audio.")
 	else:
 		if audio_process:
-			audio_process.terminate()
+			audio_process.kill()
 			print("Killing audio.")
 	###### ###### ###### ###### ######
 
@@ -83,7 +83,7 @@ while True:
 			print("Starting video.")
 	else:
 		if video_process:
-			video_process.terminate()
+			video_process.kill()
 			print("Terminating video.")
 	###### ###### ###### ###### ######
 
