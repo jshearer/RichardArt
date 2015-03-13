@@ -9,5 +9,5 @@ def write(pin, value):
 	gpio.output(pin,value)
 
 def read(pin):
-	pio.setup(pin, gpio.IN, gpio.PUD_DOWN)
+	gpio.setup(pin, gpio.IN, gpio.PUD_DOWN)
 	return gpio.input(pin)
