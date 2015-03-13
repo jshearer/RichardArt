@@ -52,7 +52,7 @@ while True:
 	else:
 		if is_recording:
 			# record_process.kill()
-			os.kill(record_process.pid, signal.SIGINT)
+			os.killpg(record_process.pid, signal.SIGTERM)
 			is_recording = False
 			print("Done recording, terminating.")
 	###### ###### ###### ###### ######
@@ -70,7 +70,7 @@ while True:
 	else:
 		if audio_process:
 			# audio_process.kill()
-			os.kill(audio_process.pid, signal.SIGINT)
+			os.killpg(audio_process.pid, signal.SIGTERM)
 			print("Killing audio.")
 	###### ###### ###### ###### ######
 
@@ -87,7 +87,7 @@ while True:
 	else:
 		if video_process:
 			# video_process.kill()
-			os.kill(video_process.pid, signal.SIGINT)
+			os.killpg(video_process.pid, signal.SIGTERM)
 			print("Terminating video.")
 	###### ###### ###### ###### ######
 
