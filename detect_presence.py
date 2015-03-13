@@ -70,7 +70,7 @@ class PresenceDetector(object):
 		raw_presence = self.is_present(pkt)
 
 		if raw_presence:
-			self.num_trues = num_trues
+			self.num_trues = self.num_trues+1
 			if self.num_trues<self.consecutive_trues:
 				raw_presence = False
 		else:
