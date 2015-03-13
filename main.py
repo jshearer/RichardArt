@@ -81,10 +81,10 @@ while True:
 		if video_process:
 			if video_process.poll() != None:
 				#Process finished
-				video_process = subprocess.Popen(['vlc', video_file], env=new_env)
+				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
 				print("Restarting video.")
 		else:
-			video_process = subprocess.Popen(['vlc', video_file], env=new_env)
+			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
 			print("Starting video.")
 	else:
 		if video_process:
