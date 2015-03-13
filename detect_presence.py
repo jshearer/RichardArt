@@ -7,13 +7,13 @@ class PresenceDetector(object):
 	"""
 	Presence is detected if any pixel is greater than threshold from its baseline value
 	"""
-	def __init__(self, true_cutoff=0.4, debounce_limit=2, trues_in_row=10):
+	def __init__(self, true_cutoff=0.4, debounce_limit=2, consecutive_trues=10):
 		self.collect_baseline()
 
 		self.debounce_limit = debounce_limit
 		self.debounce_timer = time.time()
 		self.last_value = False
-		self.trues_in_a_row = trues_in_a_row
+		self.consecutive_trues = consecutive_trues
 
 		self.num_trues = 0
 
@@ -71,7 +71,7 @@ class PresenceDetector(object):
 
 		if raw_presence:
 			self.num_trues = num_trues
-			if self.num_trues<self.trues_in_row:
+			if self.num_trues<self.consecutive_trues:
 				raw_presence = False
 		else:
 			self.num_trues = 0
