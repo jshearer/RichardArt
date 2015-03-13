@@ -37,12 +37,13 @@ class PresenceDetector(object):
 
 		print("Threshold calculated: \n%s"%str(self.threshold))
 
-	def is_present(self):
+	def is_present(self, pkt=None):
 		"""
 		Reads a packet, and subtracts it from the baseline.
 		Then checks to see if any pixels are higher than threshold.
 		"""
-		pkt = device.read_packet()
+		if not pkt:
+			pkt = device.read_packet()
 		diff_from_empty = np.abs(np.subtract(pkt,self.empty_baseline))
 		any_gt_threshold = diff_from_empty>self.threshold
 
@@ -53,18 +54,18 @@ class PresenceDetector(object):
 		return float(triggered_pixels)/float(any_gt_threshold.size)>self.cutoff
 
 
+if __name__ == "__main__":
+	detector = PresenceDetector()
 
-detector = PresenceDetector()
+	prev = False
+	pin = 25
 
-prev = False
-pin = 25
+	gpio.write(pin,prev)
+	while True:
+		present = detector.is_present()
+		print("Presence detected!" if present else "Nobody in view.")
+		if present is not prev:
+			prev = present
+			gpio.write(pin,present)
 
-gpio.write(pin,prev)
-while True:
-	present = detector.is_present()
-	print("Presence detected!" if present else "Nobody in view.")
-	if present is not prev:
-		prev = present
-		gpio.write(pin,present)
-
-device.shutdown()
+	device.shutdown()
