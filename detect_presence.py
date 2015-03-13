@@ -1,6 +1,7 @@
 import numpy as np
 from grideye_comm import device
 import time
+import gpio
 
 class PresenceDetector(object):
 	"""
@@ -55,7 +56,15 @@ class PresenceDetector(object):
 
 detector = PresenceDetector()
 
+prev = False
+pin = 25
+
+gpio.write(pin,prev)
 while True:
-	print("Presence detected!" if detector.is_present() else "Nobody in view.")
+	present = detector.is_present()
+	print("Presence detected!" if present else "Nobody in view.")
+	if present is not prev:
+		prev = present
+		gpio.write(pin,present)
 
 device.shutdown()
