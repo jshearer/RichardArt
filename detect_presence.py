@@ -1,14 +1,19 @@
 import numpy as np
 from grideye_comm import device
 import time
-import gpio
+#import gpio
 
 class PresenceDetector(object):
 	"""
 	Presence is detected if any pixel is greater than threshold from its baseline value
 	"""
-	def __init__(self, true_cutoff=0.5):
+	def __init__(self, true_cutoff=0.4, debounce_limit=2):
 		self.collect_baseline()
+
+		self.debounce_limit = debounce_limit
+		self.debounce_timer = time.time()
+		self.last_value = False
+
 		self.cutoff = true_cutoff
 
 	def collect_avg(self,secs):
@@ -53,6 +58,40 @@ class PresenceDetector(object):
 
 		return float(triggered_pixels)/float(any_gt_threshold.size)>self.cutoff
 
+	def debounce_present(self, pkt=None):
+		"""
+		If was false, true is immediatly accepted and sets timer
+		If was true, true resets timer. False is accepted if timer is passed, else ignored.
+		"""
+
+		raw_presence = self.is_present(pkt)
+
+		if self.last_value:
+			#If was true,
+			if raw_presence:
+				#true resets timer
+				self.debounce_timer = time.time()
+				self.last_value = True
+				return True
+			else:
+				#False is accepted if timer is passed, else ignored.
+				if (time.time()-self.debounce_timer)>self.debounce_limit:
+					self.last_value = False
+					return False
+				else:
+					self.last_value = True
+					return True
+		else:
+			#If was false
+			if raw_presence:
+				self.debounce_timer = time.time()
+				self.last_value = True
+				return True
+			else:
+				self.last_value = False
+				return False
+
+
 
 if __name__ == "__main__":
 	detector = PresenceDetector()
@@ -60,12 +99,12 @@ if __name__ == "__main__":
 	prev = False
 	pin = 25
 
-	gpio.write(pin,prev)
+	#gpio.write(pin,prev)
 	while True:
-		present = detector.is_present()
+		present = detector.debounce_present()
 		print("Presence detected!" if present else "Nobody in view.")
 		if present is not prev:
 			prev = present
-			gpio.write(pin,present)
+			#gpio.write(pin,present)
 
 	device.shutdown()

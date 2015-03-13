@@ -32,7 +32,7 @@ new_env = dict(os.environ, DISPLAY=":0")
 
 while True:
 	######   Handle Detection   ######
-	if detector.is_present():
+	if detector.debounce_present():
 		play_audio = True
 		switch_on = True
 	else:
