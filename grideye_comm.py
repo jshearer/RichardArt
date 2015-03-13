@@ -1,38 +1,46 @@
 from serial import Serial
 import struct
 import numpy
+import time
 
-def read_packet(port):
+class GrideyeComm(object):
+	def __init__(self, port='/dev/ttyUSB0'):
+		self.port = Serial(port=port,baudrate=115200)
+		self.last = time.time()
+		self.port.write('*')
 
-	while port.read() is not '*':
-		continue
+	def shutdown(self):
+		self.port.write('~')
 
-	two_stars = struct.unpack('cc',port.read(2))
+	def read_packet(self):
 
-	if two_stars[0] == '*' and two_stars[1] == '*':
-		print("Got three *'s")
-	else:
-		print("Falied to get three *'s. Got instead: %s"%str(two_stars))
-	
-	#Thermistor
-	port.read(2)
-	
-	data = struct.unpack('H'*64,str(port.read(128)))
+		if (time.time()-self.last)>0.11:
+			self.port.flushInput()
 
-	data = numpy.fliplr(numpy.reshape(data,(8,8)))
+		while self.port.read() is not '*':
+			continue
 
-	if numpy.amax(data)>200:
-		print("Got junk data!!!!! Here it is:\n%s"%str(data))
-		return read_packet(port)
+		two_stars = struct.unpack('cc',self.port.read(2))
 
-	print("Got data! Wheee: \n%s"%str(data))
+		# if two_stars[0] == '*' and two_stars[1] == '*':
+		# 	pass#print("Got three *'s")
+		# else:
+		# 	print("Falied to get three *'s. Got instead: %s"%str(two_stars))
+		
+		#Thermistor
+		self.port.read(2)
+		
+		data = struct.unpack('H'*64,str(self.port.read(128)))
 
-	return data
+		data = numpy.fliplr(numpy.reshape(data,(8,8)))
 
-def initialize_device(port='/dev/ttyUSB0'):
-	port = Serial(port=port,baudrate=115200)
-	#Initialize the device with '*'
-	port.write('*')
+		if numpy.amax(data)>200:
+			# print("Got junk data!!!!! Here it is:\n%s"%str(data))
+			return self.read_packet()
 
-	return port
+		#print("Got data! Wheee: \n%s"%str(data))
 
+		self.last = time.time()
+		return data
+
+device = GrideyeComm()
