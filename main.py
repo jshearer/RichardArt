@@ -46,7 +46,7 @@ while True:
 
 	if record_pin_state == record_switch_pressed_state:
 		if not is_recording:
-			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'])
+			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'], preexec_fn=os.setsid)
 			is_recording = True
 			print("Starting to record.")
 	else:
@@ -62,10 +62,10 @@ while True:
 		if audio_process:
 			if audio_process.poll() != None:
 				#Process finished
-				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
+				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env, preexec_fn=os.setsid)
 				print("Restarting the audio.")
 		else:
-			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
+			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env, preexec_fn=os.setsid)
 			print("Starting audio.")
 	else:
 		if audio_process:
@@ -79,10 +79,10 @@ while True:
 		if video_process:
 			if video_process.poll() != None:
 				#Process finished
-				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
+				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env, preexec_fn=os.setsid)
 				print("Restarting video.")
 		else:
-			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
+			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env, preexec_fn=os.setsid)
 			print("Starting video.")
 	else:
 		if video_process:
