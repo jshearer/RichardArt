@@ -3,6 +3,7 @@ import gpio
 import time
 import subprocess
 import os
+import signal
 
 detector = PresenceDetector()
 
@@ -50,7 +51,8 @@ while True:
 			print("Starting to record.")
 	else:
 		if is_recording:
-			record_process.kill()
+			# record_process.kill()
+			os.kill(record_process.pid,signal.SIGTERM)
 			is_recording = False
 			print("Done recording, terminating.")
 	###### ###### ###### ###### ######
@@ -67,7 +69,8 @@ while True:
 			print("Starting audio.")
 	else:
 		if audio_process:
-			audio_process.kill()
+			# audio_process.kill()
+			os.kill(audio_process.pid,signal.SIGTERM)
 			print("Killing audio.")
 	###### ###### ###### ###### ######
 
@@ -83,7 +86,8 @@ while True:
 			print("Starting video.")
 	else:
 		if video_process:
-			video_process.kill()
+			# video_process.kill()
+			os.kill(video_process.pid,signal.SIGTERM)
 			print("Terminating video.")
 	###### ###### ###### ###### ######
 
