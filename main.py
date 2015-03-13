@@ -46,13 +46,13 @@ while True:
 
 	if record_pin_state == record_switch_pressed_state:
 		if not is_recording:
-			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'], preexec_fn=os.setsid)
+			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'])
 			is_recording = True
 			print("Starting to record.")
 	else:
 		if is_recording:
 			# record_process.kill()
-			os.killpg(record_process.pid, signal.SIGTERM)
+			os.kill(record_process.pid, signal.SIGTERM)
 			is_recording = False
 			print("Done recording, terminating.")
 	###### ###### ###### ###### ######
@@ -62,15 +62,17 @@ while True:
 		if audio_process:
 			if audio_process.poll() != None:
 				#Process finished
-				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env, preexec_fn=os.setsid)
+
+				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
 				print("Restarting the audio.")
 		else:
-			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env, preexec_fn=os.setsid)
+			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
 			print("Starting audio.")
 	else:
 		if audio_process:
 			# audio_process.kill()
-			os.killpg(audio_process.pid, signal.SIGTERM)
+			os.kill(audio_process.pid, signal.SIGTERM)
+			audio_process = None
 			print("Killing audio.")
 	###### ###### ###### ###### ######
 
@@ -79,15 +81,16 @@ while True:
 		if video_process:
 			if video_process.poll() != None:
 				#Process finished
-				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env, preexec_fn=os.setsid)
+				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
 				print("Restarting video.")
 		else:
-			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env, preexec_fn=os.setsid)
+			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
 			print("Starting video.")
 	else:
 		if video_process:
 			# video_process.kill()
-			os.killpg(video_process.pid, signal.SIGTERM)
+			os.kill(video_process.pid, signal.SIGTERM)
+			video_process = None
 			print("Terminating video.")
 	###### ###### ###### ###### ######
 
