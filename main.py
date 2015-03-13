@@ -25,7 +25,7 @@ audio_process = None
 video_file = 'IMG_0812.MOV'
 audio_file = 'IMG_0813.mp3'
 
-x_server = subprocess.popen('X')
+x_server = subprocess.Popen('X')
 
 new_env = dict(os.environ, DISPLAY=":0")
 
@@ -45,7 +45,7 @@ while True:
 
 	if record_pin_state == record_switch_pressed_state:
 		if not is_recording:
-			record_process = subprocess.popen(['arecord',str(time.time())+'.wav'])
+			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'])
 			is_recording = True
 	else:
 		if is_recording:
@@ -58,9 +58,9 @@ while True:
 		if audio_process:
 			if audio_process.poll() != None:
 				#Process finished
-				audio_process = subprocess.popen(['omxplayer', audio_file], env=new_env)
+				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
 		else:
-			audio_process = subprocess.popen(['omxplayer', audio_file], env=new_env)
+			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
 	else:
 		if audio_process:
 			audio_process.terminate()
@@ -71,9 +71,9 @@ while True:
 		if video_process:
 			if video_process.poll() != None:
 				#Process finished
-				video_process = subprocess.popen(['omxplayer', video_file], env=new_env)
+				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
 		else:
-			video_process = subprocess.popen(['omxplayer', video_file], env=new_env)
+			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
 	else:
 		if video_process:
 			video_process.terminate()
