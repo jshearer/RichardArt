@@ -74,7 +74,7 @@ class PresenceDetector(object):
 			if self.num_trues<self.trues_in_row:
 				raw_presence = False
 		else:
-			self.num_trues = self.num_trues - 1
+			self.num_trues = 0
 
 		if self.last_value:
 			#If was true,
