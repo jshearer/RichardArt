@@ -1,6 +1,4 @@
-import grideye_comm as geye
-
-gport = geye.initialize_device()
+from grideye_comm import device
 
 while True:
-	grid = geye.read_packet(gport)
+	print(device.read_packet())
