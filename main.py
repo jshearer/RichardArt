@@ -16,7 +16,7 @@ record_input_pin = 24
 #True for high, False for low
 record_switch_pressed_state = True
 
-is_recording = True
+is_recording = False
 
 record_process = None
 video_process = None
