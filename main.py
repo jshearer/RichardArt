@@ -16,7 +16,7 @@ record_input_pin = 24
 #True for high, False for low
 record_switch_pressed_state = True
 
-is_recording = False
+is_recording = True
 
 record_process = None
 video_process = None
@@ -47,10 +47,12 @@ while True:
 		if not is_recording:
 			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'])
 			is_recording = True
+			print("Starting to record.")
 	else:
 		if is_recording:
 			record_process.terminate()
 			is_recording = False
+			print("Done recording, terminating.")
 	###### ###### ###### ###### ######
 
 	###### Handle Audio Process ######
@@ -59,11 +61,14 @@ while True:
 			if audio_process.poll() != None:
 				#Process finished
 				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
+				print("Restarting the audio.")
 		else:
 			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
+			print("Starting audio.")
 	else:
 		if audio_process:
 			audio_process.terminate()
+			print("Killing audio.")
 	###### ###### ###### ###### ######
 
 	###### Handle Video Process ######
@@ -72,11 +77,14 @@ while True:
 			if video_process.poll() != None:
 				#Process finished
 				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
+				print("Restarting video.")
 		else:
 			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
+			print("Starting video.")
 	else:
 		if video_process:
 			video_process.terminate()
+			print("Terminating video.")
 	###### ###### ###### ###### ######
 
 	###### Handle Switch Output ######
