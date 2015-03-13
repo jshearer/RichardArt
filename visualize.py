@@ -6,9 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import numpy as np
 
-import grideye_comm as geye
-
-gport = geye.initialize_device()
+from grideye_comm import device
 
 # from the docs:
 
@@ -23,18 +21,40 @@ gport = geye.initialize_device()
 #           'spline36', 'hanning', 'hamming', 'hermite', 'kaiser', 'quadric',
 #           'catrom', 'gaussian', 'bessel', 'mitchell', 'sinc', 'lanczos']
 
-grid = geye.read_packet(gport)
-grid = np.subtract(np.min(grid),grid)
+grid = device.read_packet().astype(float)
+
+# grid = np.subtract(grid,np.min(grid))
+# grid = np.divide(grid,np.max(grid))
+# grid = np.multiply(200,grid)
+
+print(grid)
 
 plt.ion()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
-hImage = ax.imshow(grid, interpolation='none')
+hImage = ax.imshow(grid, interpolation='lanczos', vmin=0, vmax=200)
+
+avg_count = 2
+avg_current = 0
+
+avg = grid
 
 while True:
-	hImage.set_data(grid)
-	plt.draw()
-	plt.pause(0.02)
-	grid = geye.read_packet(gport)
-	grid = np.subtract(np.min(grid),grid)
+	if avg_current>=avg_count:
+		avg_current = 0
+		avg = np.divide(avg,avg_count)
+		hImage.set_data(avg)		
+		plt.draw()
+		plt.pause(0.02)
+
+	grid = device.read_packet().astype(float)
+	
+	# grid = np.subtract(grid,np.min(grid))
+	# grid = np.divide(grid,np.max(grid))
+	# grid = np.multiply(200,grid)
+
+	avg = np.add(avg,grid)
+	avg_current += 1
+
+device.shutdown()
