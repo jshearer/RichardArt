@@ -44,6 +44,8 @@ while True:
 	###### Handle record button ######
 	record_pin_state = gpio.read(record_input_pin)
 
+	print("Record pin state: %s"%str(record_pin_state))
+
 	if record_pin_state == record_switch_pressed_state:
 		if not is_recording:
 			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'])
@@ -58,37 +60,37 @@ while True:
 	###### ###### ###### ###### ######
 
 	###### Handle Audio Process ######
-	if play_audio:
-		if audio_process:
-			if audio_process.poll() != None:
-				#Process finished
-				audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
-				print("Restarting the audio.")
-		else:
-			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
-			print("Starting audio.")
-	else:
-		if audio_process:
-			# audio_process.kill()
-			os.kill(audio_process.pid,signal.SIGTERM)
+	# if play_audio:
+	# 	if audio_process:
+	# 		if audio_process.poll() != None:
+	# 			#Process finished
+	# 			audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
+	# 			print("Restarting the audio.")
+	# 	else:
+	# 		audio_process = subprocess.Popen(['omxplayer', audio_file], env=new_env)
+	# 		print("Starting audio.")
+	# else:
+	# 	if audio_process:
+	# 		# audio_process.kill()
+	# 		os.kill(audio_process.pid,signal.SIGTERM)
 			print("Killing audio.")
 	###### ###### ###### ###### ######
 
 	###### Handle Video Process ######
-	if play_video:
-		if video_process:
-			if video_process.poll() != None:
-				#Process finished
-				video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
-				print("Restarting video.")
-		else:
-			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
-			print("Starting video.")
-	else:
-		if video_process:
-			# video_process.kill()
-			os.kill(video_process.pid,signal.SIGTERM)
-			print("Terminating video.")
+	# if play_video:
+	# 	if video_process:
+	# 		if video_process.poll() != None:
+	# 			#Process finished
+	# 			video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
+	# 			print("Restarting video.")
+	# 	else:
+	# 		video_process = subprocess.Popen(['omxplayer', video_file], env=new_env)
+	# 		print("Starting video.")
+	# else:
+	# 	if video_process:
+	# 		# video_process.kill()
+	# 		os.kill(video_process.pid,signal.SIGTERM)
+	# 		print("Terminating video.")
 	###### ###### ###### ###### ######
 
 	###### Handle Switch Output ######
