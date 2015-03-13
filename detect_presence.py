@@ -30,7 +30,7 @@ class PresenceDetector(object):
 
 		raw_input("Point sensor at room, make sure it's stable, and that somebody is in the room.")
 
-		self.occupied_baseline = self.collect_avg(secs)
+		self.occupied_baseline = self.collect_avg(secs*2)
 		print("Occupied baseline calculated: \n%s"%str(self.occupied_baseline))
 
 		self.threshold = np.abs(np.subtract(self.occupied_baseline,self.empty_baseline))
