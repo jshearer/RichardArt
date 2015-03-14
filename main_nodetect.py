@@ -5,8 +5,6 @@ import subprocess
 import os
 import signal
 
-detector = PresenceDetector()
-
 play_audio = False
 switch_on = False
 play_video = True
