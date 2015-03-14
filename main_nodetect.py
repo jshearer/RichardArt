@@ -13,7 +13,7 @@ switch_out_pin = 25
 record_input_pin = 24
 
 #True for high, False for low
-record_switch_pressed_state = True
+record_switch_pressed_state = 1
 
 is_recording = False
 
@@ -29,23 +29,16 @@ x_server = subprocess.Popen('X')
 new_env = dict(os.environ, DISPLAY=":0")
 
 while True:
-	play_audio = True
-	switch_on = True
 
 	###### Handle record button ######
 	record_pin_state = gpio.read(record_input_pin)
 
 	if record_pin_state == record_switch_pressed_state:
-		if not is_recording:
-			record_process = subprocess.Popen(['arecord',str(time.time())+'.wav'])
-			is_recording = True
-			print("Starting to record.")
+		play_audio = True
+		switch_on = True
 	else:
-		if is_recording:
-			# record_process.kill()
-			os.kill(record_process.pid, signal.SIGTERM)
-			is_recording = False
-			print("Done recording, terminating.")
+		play_audio = False
+		switch_on = False
 	###### ###### ###### ###### ######
 
 	###### Handle Audio Process ######
