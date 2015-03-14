@@ -13,7 +13,7 @@ switch_out_pin = 25
 record_input_pin = 24
 
 #True for high, False for low
-record_switch_pressed_state = 1
+record_switch_pressed_state = 0
 
 is_recording = False
 

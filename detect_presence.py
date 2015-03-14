@@ -7,7 +7,7 @@ class PresenceDetector(object):
 	"""
 	Presence is detected if any pixel is greater than threshold from its baseline value
 	"""
-	def __init__(self, true_cutoff=0.4, debounce_limit=2, consecutive_trues=10):
+	def __init__(self, true_cutoff=0.4, debounce_limit=2, consecutive_trues=50):
 		self.collect_baseline()
 
 		self.debounce_limit = debounce_limit
