@@ -25,8 +25,8 @@ record_process = None
 video_process = None
 audio_process = None
 
-video_file = 'IMG_0812_VFLIP.MOV'
-audio_file = 'IMG_0813.mp3'
+video_file = 'IMG_0813_VFLIP.MOV'
+audio_file = 'IMG_0812.mp3'
 
 x_server = subprocess.Popen('X')
 
