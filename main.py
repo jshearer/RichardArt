@@ -70,7 +70,8 @@ while True:
 			print("Starting audio.")
 	else:
 		if audio_process:
-			audio_process.stdin.write('q\n')
+			audio_process.stdin.write('q')
+			audio_process.stdin.flush()
 			audio_process.terminate()
 			audio_process = None
 			print("Killing audio.")
@@ -88,7 +89,8 @@ while True:
 			print("Starting video.")
 	else:
 		if video_process:
-			video_process.stdin.write('q\n')
+			video_process.stdin.write('q')
+			video_process.stdin.flush()
 			video_process.terminate()
 			video_process = None
 			print("Terminating video.")
